@@ -851,8 +851,7 @@ IInlineObject :: struct #raw_union {
 }
 IInlineObject_VTable :: struct {
 	using iunknown_vtable: IUnknown_VTable,
-	Draw: proc "system" (
-						 void* clientDrawingContext,
+	Draw: proc "system" (this: ^IInlineObject,
 						 ITextRenderer* renderer,
 						 f32 originX,
 						 f32 originY,
@@ -861,15 +860,15 @@ IInlineObject_VTable :: struct {
 						 IUnknown* clientDrawingEffect
 						 ) -> HRESULT,
 	
-	GetMetrics: proc "system" (
+	GetMetrics: proc "system" (this: ^IInlineObject,
 							   INLINE_OBJECT_METRICS* metrics
 							   ) -> HRESULT,
 	
-	GetOverhangMetrics: proc "system" (
+	GetOverhangMetrics: proc "system" (this: ^IInlineObject,
 									   OVERHANG_METRICS* overhangs
 									   ) -> HRESULT,
 	
-	GetBreakConditions: proc "system" (
+	GetBreakConditions: proc "system" (this: ^IInlineObject,
 									   BREAK_CONDITION* breakConditionBefore,
 									   BREAK_CONDITION* breakConditionAfter
 									   ) -> HRESULT,
@@ -883,17 +882,17 @@ IPixelSnapping :: struct #raw_union {
 }
 IPixelSnapping_VTable :: struct {
 	using iunknown_vtable: IUnknown_VTable,
-	IsPixelSnappingDisabled: proc "system" (
+	IsPixelSnappingDisabled: proc "system" (this: ^IPixelSnapping,
 											void* clientDrawingContext,
 											b32* isDisabled
 											) -> HRESULT,
 	
-	GetCurrentTransform: proc "system" (
+	GetCurrentTransform: proc "system" (this: ^IPixelSnapping,
 										void* clientDrawingContext,
 										MATRIX* transform
 										) -> HRESULT,
 	
-	GetPixelsPerDip: proc "system" (
+	GetPixelsPerDip: proc "system" (this: ^IPixelSnapping,
 									void* clientDrawingContext,
 									f32* pixelsPerDip
 									) -> HRESULT,
@@ -907,7 +906,7 @@ ITextRenderer :: struct #raw_union {
 }
 ITextRenderer_VTable :: struct {
 	using ipixelsnapping_vtable: IPixelSnapping_VTable,
-	DrawGlyphRun: proc "system" (
+	DrawGlyphRun: proc "system" (this: ^ITextRenderer,
 								 void* clientDrawingContext,
 								 f32 baselineOriginX,
 								 f32 baselineOriginY,
@@ -917,7 +916,7 @@ ITextRenderer_VTable :: struct {
 								 IUnknown* clientDrawingEffect
 								 ) -> HRESULT,
 	
-	DrawUnderline: proc "system" (
+	DrawUnderline: proc "system" (this: ^ITextRenderer,
 								  void* clientDrawingContext,
 								  f32 baselineOriginX,
 								  f32 baselineOriginY,
@@ -925,7 +924,7 @@ ITextRenderer_VTable :: struct {
 								  IUnknown* clientDrawingEffect
 								  ) -> HRESULT,
 	
-	DrawStrikethrough: proc "system" (
+	DrawStrikethrough: proc "system" (this: ^ITextRenderer,
 									  void* clientDrawingContext,
 									  f32 baselineOriginX,
 									  f32 baselineOriginY,
@@ -933,7 +932,7 @@ ITextRenderer_VTable :: struct {
 									  IUnknown* clientDrawingEffect
 									  ) -> HRESULT,
 	
-	DrawInlineObject: proc "system" (
+	DrawInlineObject: proc "system" (this: ^ITextRenderer,
 									 void* clientDrawingContext,
 									 f32 originX,
 									 f32 originY,
@@ -952,196 +951,196 @@ ITextLayout :: struct #raw_union {
 }
 ITextLayout_VTable :: struct {
 	using itextformat_vtable: ITextFormat_VTable,
-	SetMaxWidth: proc "system" (
+	SetMaxWidth: proc "system" (this: ^ITextLayout,
 								f32 maxWidth
 								) -> HRESULT,
 	
-	SetMaxHeight: proc "system" (
+	SetMaxHeight: proc "system" (this: ^ITextLayout,
 								 f32 maxHeight
 								 ) -> HRESULT,
 	
-	SetFontCollection: proc "system" (
+	SetFontCollection: proc "system" (this: ^ITextLayout,
 									  IFontCollection* fontCollection,
 									  TEXT_RANGE textRange
 									  ) -> HRESULT,
 	
-	SetFontFamilyName: proc "system" (
+	SetFontFamilyName: proc "system" (this: ^ITextLayout,
 									  u16* fontFamilyName,
 									  TEXT_RANGE textRange
 									  ) -> HRESULT,
 	
-	SetFontWeight: proc "system" (
+	SetFontWeight: proc "system" (this: ^ITextLayout,
 								  FONT_WEIGHT fontWeight,
 								  TEXT_RANGE textRange
 								  ) -> HRESULT,
 	
-	SetFontStyle: proc "system" (
+	SetFontStyle: proc "system" (this: ^ITextLayout,
 								 FONT_STYLE fontStyle,
 								 TEXT_RANGE textRange
 								 ) -> HRESULT,
 	
-	SetFontStretch: proc "system" (
+	SetFontStretch: proc "system" (this: ^ITextLayout,
 								   FONT_STRETCH fontStretch,
 								   TEXT_RANGE textRange
 								   ) -> HRESULT,
 	
-	SetFontSize: proc "system" (
+	SetFontSize: proc "system" (this: ^ITextLayout,
 								f32 fontSize,
 								TEXT_RANGE textRange
 								) -> HRESULT,
 	
-	SetUnderline: proc "system" (
+	SetUnderline: proc "system" (this: ^ITextLayout,
 								 b32 hasUnderline,
 								 TEXT_RANGE textRange
 								 ) -> HRESULT,
 	
-	SetStrikethrough: proc "system" (
+	SetStrikethrough: proc "system" (this: ^ITextLayout,
 									 b32 hasStrikethrough,
 									 TEXT_RANGE textRange
 									 ) -> HRESULT,
 	
-	SetDrawingEffect: proc "system" (
+	SetDrawingEffect: proc "system" (this: ^ITextLayout,
 									 IUnknown* drawingEffect,
 									 TEXT_RANGE textRange
 									 ) -> HRESULT,
 	
-	SetInlineObject: proc "system" (
+	SetInlineObject: proc "system" (this: ^ITextLayout,
 									IInlineObject* inlineObject,
 									TEXT_RANGE textRange
 									) -> HRESULT,
 	
-	SetTypography: proc "system" (
+	SetTypography: proc "system" (this: ^ITextLayout,
 								  ITypography* typography,
 								  TEXT_RANGE textRange
 								  ) -> HRESULT,
 	
-	SetLocaleName: proc "system" (
+	SetLocaleName: proc "system" (this: ^ITextLayout,
 								  u16* localeName,
 								  TEXT_RANGE textRange
 								  ) -> HRESULT,
 	
-	GetMaxWidth: proc "system" () -> f32,
+	GetMaxWidth: proc "system" (this: ^ITextLayout) -> f32,
 	
-	GetMaxHeight: proc "system" () -> f32,
+	GetMaxHeight: proc "system" (this: ^ITextLayout) -> f32,
 	
-	GetFontCollection: proc "system" (
+	GetFontCollection: proc "system" (this: ^ITextLayout,
 									  u32 currentPosition,
 									  _COM_Outptr_ IFontCollection** fontCollection,
 									  _Out_opt_ TEXT_RANGE* textRange = NULL
 									  ) -> HRESULT,
 	
-	GetFontFamilyNameLength: proc "system" (
+	GetFontFamilyNameLength: proc "system" (this: ^ITextLayout,
 											u32 currentPosition,
 											u32* nameLength,
 											_Out_opt_ TEXT_RANGE* textRange = NULL
 											) -> HRESULT,
 	
-	GetFontFamilyName: proc "system" (
+	GetFontFamilyName: proc "system" (this: ^ITextLayout,
 									  u32 currentPosition,
 									  _Out_writes_z_(nameSize) u16* fontFamilyName,
 									  u32 nameSize,
 									  _Out_opt_ TEXT_RANGE* textRange = NULL
 									  ) -> HRESULT,
 	
-	GetFontWeight: proc "system" (
+	GetFontWeight: proc "system" (this: ^ITextLayout,
 								  u32 currentPosition,
 								  FONT_WEIGHT* fontWeight,
 								  _Out_opt_ TEXT_RANGE* textRange = NULL
 								  ) -> HRESULT,
 	
-	GetFontStyle: proc "system" (
+	GetFontStyle: proc "system" (this: ^ITextLayout,
 								 u32 currentPosition,
 								 FONT_STYLE* fontStyle,
 								 _Out_opt_ TEXT_RANGE* textRange = NULL
 								 ) -> HRESULT,
 	
-	GetFontStretch: proc "system" (
+	GetFontStretch: proc "system" (this: ^ITextLayout,
 								   u32 currentPosition,
 								   FONT_STRETCH* fontStretch,
 								   _Out_opt_ TEXT_RANGE* textRange = NULL
 								   ) -> HRESULT,
 	
-	GetFontSize: proc "system" (
+	GetFontSize: proc "system" (this: ^ITextLayout,
 								u32 currentPosition,
 								f32* fontSize,
 								_Out_opt_ TEXT_RANGE* textRange = NULL
 								) -> HRESULT,
 	
-	GetUnderline: proc "system" (
+	GetUnderline: proc "system" (this: ^ITextLayout,
 								 u32 currentPosition,
 								 b32* hasUnderline,
 								 _Out_opt_ TEXT_RANGE* textRange = NULL
 								 ) -> HRESULT,
 	
-	GetStrikethrough: proc "system" (
+	GetStrikethrough: proc "system" (this: ^ITextLayout,
 									 u32 currentPosition,
 									 b32* hasStrikethrough,
 									 _Out_opt_ TEXT_RANGE* textRange = NULL
 									 ) -> HRESULT,
 	
-	GetDrawingEffect: proc "system" (
+	GetDrawingEffect: proc "system" (this: ^ITextLayout,
 									 u32 currentPosition,
 									 _COM_Outptr_ IUnknown** drawingEffect,
 									 _Out_opt_ TEXT_RANGE* textRange = NULL
 									 ) -> HRESULT,
 	
-	GetInlineObject: proc "system" (
+	GetInlineObject: proc "system" (this: ^ITextLayout,
 									u32 currentPosition,
 									_COM_Outptr_ IInlineObject** inlineObject,
 									_Out_opt_ TEXT_RANGE* textRange = NULL
 									) -> HRESULT,
 	
-	GetTypography: proc "system" (
+	GetTypography: proc "system" (this: ^ITextLayout,
 								  u32 currentPosition,
 								  _COM_Outptr_ ITypography** typography,
 								  _Out_opt_ TEXT_RANGE* textRange = NULL
 								  ) -> HRESULT,
 	
-	GetLocaleNameLength: proc "system" (
+	GetLocaleNameLength: proc "system" (this: ^ITextLayout,
 										u32 currentPosition,
 										u32* nameLength,
 										_Out_opt_ TEXT_RANGE* textRange = NULL
 										) -> HRESULT,
 	
-	GetLocaleName: proc "system" (
+	GetLocaleName: proc "system" (this: ^ITextLayout,
 								  u32 currentPosition,
 								  _Out_writes_z_(nameSize) u16* localeName,
 								  u32 nameSize,
 								  _Out_opt_ TEXT_RANGE* textRange = NULL
 								  ) -> HRESULT,
 	
-	Draw: proc "system" (
+	Draw: proc "system" (this: ^ITextLayout,
 						 void* clientDrawingContext,
 						 ITextRenderer* renderer,
 						 f32 originX,
 						 f32 originY
 						 ) -> HRESULT,
 	
-	GetLineMetrics: proc "system" (
+	GetLineMetrics: proc "system" (this: ^ITextLayout,
 								   _Out_writes_opt_(maxLineCount) LINE_METRICS* lineMetrics,
 								   u32 maxLineCount,
 								   u32* actualLineCount
 								   ) -> HRESULT,
 	
-	GetMetrics: proc "system" (
+	GetMetrics: proc "system" (this: ^ITextLayout,
 							   TEXT_METRICS* textMetrics
 							   ) -> HRESULT,
 	
-	GetOverhangMetrics: proc "system" (
+	GetOverhangMetrics: proc "system" (this: ^ITextLayout,
 									   OVERHANG_METRICS* overhangs
 									   ) -> HRESULT,
 	
-	GetClusterMetrics: proc "system" (
+	GetClusterMetrics: proc "system" (this: ^ITextLayout,
 									  _Out_writes_opt_(maxClusterCount) CLUSTER_METRICS* clusterMetrics,
 									  u32 maxClusterCount,
 									  u32* actualClusterCount
 									  ) -> HRESULT,
 	
-	DetermineMinWidth: proc "system" (
+	DetermineMinWidth: proc "system" (this: ^ITextLayout,
 									  f32* minWidth
 									  ) -> HRESULT,
 	
-	HitTestPoint: proc "system" (
+	HitTestPoint: proc "system" (this: ^ITextLayout,
 								 f32 pointX,
 								 f32 pointY,
 								 b32* isTrailingHit,
@@ -1149,7 +1148,7 @@ ITextLayout_VTable :: struct {
 								 HIT_TEST_METRICS* hitTestMetrics
 								 ) -> HRESULT,
 	
-	HitTestTextPosition: proc "system" (
+	HitTestTextPosition: proc "system" (this: ^ITextLayout,
 										u32 textPosition,
 										b32 isTrailingHit,
 										f32* pointX,
@@ -1157,7 +1156,7 @@ ITextLayout_VTable :: struct {
 										HIT_TEST_METRICS* hitTestMetrics
 										) -> HRESULT,
 	
-	HitTestTextRange: proc "system" (
+	HitTestTextRange: proc "system" (this: ^ITextLayout,
 									 u32 textPosition,
 									 u32 textLength,
 									 f32 originX,
@@ -1178,7 +1177,6 @@ ITextLayout_VTable :: struct {
 	using ITextFormat::GetLocaleName,
 }
 
-
 IBitmapRenderTarget_UUID_STRING :: "5e5a32a3-8dff-4773-9ff6-0696eab77267"
 IBitmapRenderTarget_UUID := &IID{}
 IBitmapRenderTarget :: struct #raw_union {
@@ -1187,7 +1185,7 @@ IBitmapRenderTarget :: struct #raw_union {
 }
 IBitmapRenderTarget_VTable :: struct {
 	using iunknown_vtable: IUnknown_VTable,
-	DrawGlyphRun: proc "system" (
+	DrawGlyphRun: proc "system" (this: ^IBitmapRenderTarget,
 								 f32 baselineOriginX,
 								 f32 baselineOriginY,
 								 MEASURING_MODE measuringMode,
@@ -1197,27 +1195,27 @@ IBitmapRenderTarget_VTable :: struct {
 								 _Out_opt_ RECT* blackBoxRect = NULL
 								 ) -> HRESULT,
 	
-	GetMemoryDC: proc "system" () -> HDC,
+	GetMemoryDC: proc "system" (this: ^IBitmapRenderTarget) -> HDC,
 	
-	GetPixelsPerDip: proc "system" () -> f32,
+	GetPixelsPerDip: proc "system" (this: ^IBitmapRenderTarget) -> f32,
 	
-	SetPixelsPerDip: proc "system" (
+	SetPixelsPerDip: proc "system" (this: ^IBitmapRenderTarget,
 									f32 pixelsPerDip
 									) -> HRESULT,
 	
-	GetCurrentTransform: proc "system" (
+	GetCurrentTransform: proc "system" (this: ^IBitmapRenderTarget,
 										MATRIX* transform
 										) -> HRESULT,
 	
-	SetCurrentTransform: proc "system" (
+	SetCurrentTransform: proc "system" (this: ^IBitmapRenderTarget,
 										MATRIX* transform
 										) -> HRESULT,
 	
-	GetSize: proc "system" (
+	GetSize: proc "system" (this: ^IBitmapRenderTarget,
 							SIZE* size
 							) -> HRESULT,
 	
-	Resize: proc "system" (
+	Resize: proc "system" (this: ^IBitmapRenderTarget,
 						   u32 width,
 						   u32 height
 						   ) -> HRESULT,
@@ -1231,28 +1229,28 @@ IGdiInterop :: struct #raw_union {
 }
 IGdiInterop_VTable :: struct {
 	using iunknown_vtable: IUnknown_VTable,
-	CreateFontFromLOGFONT: proc "system" (
+	CreateFontFromLOGFONT: proc "system" (this: ^IGdiInterop,
 										  LOGFONTW* logFont,
 										  _COM_Outptr_ IFont** font
 										  ) -> HRESULT,
 	
-	ConvertFontToLOGFONT: proc "system" (
+	ConvertFontToLOGFONT: proc "system" (this: ^IGdiInterop,
 										 IFont* font,
 										 LOGFONTW* logFont,
 										 b32* isSystemFont
 										 ) -> HRESULT,
 	
-	ConvertFontFaceToLOGFONT: proc "system" (
+	ConvertFontFaceToLOGFONT: proc "system" (this: ^IGdiInterop,
 											 IFontFace* font,
 											 LOGFONTW* logFont
 											 ) -> HRESULT,
 	
-	CreateFontFaceFromHdc: proc "system" (
+	CreateFontFaceFromHdc: proc "system" (this: ^IGdiInterop,
 										  HDC hdc,
 										  _COM_Outptr_ IFontFace** fontFace
 										  ) -> HRESULT,
 	
-	CreateBitmapRenderTarget: proc "system" (
+	CreateBitmapRenderTarget: proc "system" (this: ^IGdiInterop,
 											 HDC hdc,
 											 u32 width,
 											 u32 height,
@@ -1288,40 +1286,40 @@ IFactory :: struct #raw_union {
 }
 IFactory_VTable :: struct {
 	using iunknown_vtable: IUnknown_VTable,
-	GetSystemFontCollection: proc "system" (
+	GetSystemFontCollection: proc "system" (this: ^IFactory,
 											IFontCollection** fontCollection,
 											b32 checkForUpdates = FALSE
 											) -> HRESULT,
 	
-    CreateCustomFontCollection: proc "system" (
+    CreateCustomFontCollection: proc "system" (this: ^IFactory,
 											   IFontCollectionLoader* collectionLoader,
 											   _In_reads_bytes_(collectionKeySize) void* collectionKey,
 											   u32 collectionKeySize,
 											   IFontCollection** fontCollection
 											   ) -> HRESULT,
 	
-    RegisterFontCollectionLoader: proc "system" (
+    RegisterFontCollectionLoader: proc "system" (this: ^IFactory,
 												 IFontCollectionLoader* fontCollectionLoader
 												 ) -> HRESULT,
 	
-    UnregisterFontCollectionLoader: proc "system" (
+    UnregisterFontCollectionLoader: proc "system" (this: ^IFactory,
 												   IFontCollectionLoader* fontCollectionLoader
 												   ) -> HRESULT,
 	
-    CreateFontFileReference: proc "system" (
+    CreateFontFileReference: proc "system" (this: ^IFactory,
 											u16* filePath,
 											FILETIME* lastWriteTime,
 											IFontFile** fontFile
 											) -> HRESULT,
 	
-    CreateCustomFontFileReference: proc "system" (
+    CreateCustomFontFileReference: proc "system" (this: ^IFactory,
 												  _In_reads_bytes_(fontFileReferenceKeySize) void* fontFileReferenceKey,
 												  u32 fontFileReferenceKeySize,
 												  IFontFileLoader* fontFileLoader,
 												  IFontFile** fontFile
 												  ) -> HRESULT,
 	
-    CreateFontFace: proc "system" (
+    CreateFontFace: proc "system" (this: ^IFactory,
 								   FONT_FACE_TYPE fontFaceType,
 								   u32 numberOfFiles,
 								   _In_reads_(numberOfFiles) IFontFile** fontFiles,
@@ -1330,16 +1328,16 @@ IFactory_VTable :: struct {
 								   IFontFace** fontFace
 								   ) -> HRESULT,
 	
-    CreateRenderingParams: proc "system" (
+    CreateRenderingParams: proc "system" (this: ^IFactory,
 										  IRenderingParams** renderingParams
 										  ) -> HRESULT,
 	
-    CreateMonitorRenderingParams: proc "system" (
+    CreateMonitorRenderingParams: proc "system" (this: ^IFactory,
 												 HMONITOR monitor,
 												 IRenderingParams** renderingParams
 												 ) -> HRESULT,
 	
-    CreateCustomRenderingParams: proc "system" (
+    CreateCustomRenderingParams: proc "system" (this: ^IFactory,
 												f32 gamma,
 												f32 enhancedContrast,
 												f32 clearTypeLevel,
@@ -1348,15 +1346,15 @@ IFactory_VTable :: struct {
 												IRenderingParams** renderingParams
 												) -> HRESULT,
 	
-    RegisterFontFileLoader: proc "system" (
+    RegisterFontFileLoader: proc "system" (this: ^IFactory,
 										   IFontFileLoader* fontFileLoader
 										   ) -> HRESULT,
 	
-    UnregisterFontFileLoader: proc "system" (
+    UnregisterFontFileLoader: proc "system" (this: ^IFactory,
 											 IFontFileLoader* fontFileLoader
 											 ) -> HRESULT,
 	
-    CreateTextFormat: proc "system" (
+    CreateTextFormat: proc "system" (this: ^IFactory,
 									 u16* fontFamilyName,
 									 IFontCollection* fontCollection,
 									 FONT_WEIGHT fontWeight,
@@ -1367,15 +1365,15 @@ IFactory_VTable :: struct {
 									 ITextFormat** textFormat
 									 ) -> HRESULT,
 	
-    CreateTypography: proc "system" (
+    CreateTypography: proc "system" (this: ^IFactory,
 									 ITypography** typography
 									 ) -> HRESULT,
 	
-    GetGdiInterop: proc "system" (
+    GetGdiInterop: proc "system" (this: ^IFactory,
 								  IGdiInterop** gdiInterop
 								  ) -> HRESULT,
 	
-    CreateTextLayout: proc "system" (
+    CreateTextLayout: proc "system" (this: ^IFactory,
 									 _In_reads_(stringLength) u16* string,
 									 u32 stringLength,
 									 ITextFormat* textFormat,
@@ -1384,7 +1382,7 @@ IFactory_VTable :: struct {
 									 ITextLayout** textLayout
 									 ) -> HRESULT,
 	
-    CreateGdiCompatibleTextLayout: proc "system" (
+    CreateGdiCompatibleTextLayout: proc "system" (this: ^IFactory,
 												  _In_reads_(stringLength) u16* string,
 												  u32 stringLength,
 												  ITextFormat* textFormat,
@@ -1396,23 +1394,23 @@ IFactory_VTable :: struct {
 												  ITextLayout** textLayout
 												  ) -> HRESULT,
 	
-    CreateEllipsisTrimmingSign: proc "system" (
+    CreateEllipsisTrimmingSign: proc "system" (this: ^IFactory,
 											   ITextFormat* textFormat,
 											   IInlineObject** trimmingSign
 											   ) -> HRESULT,
 	
-    CreateTextAnalyzer: proc "system" (
+    CreateTextAnalyzer: proc "system" (this: ^IFactory,
 									   ITextAnalyzer** textAnalyzer
 									   ) -> HRESULT,
 	
-    CreateNumberSubstitution: proc "system" (
+    CreateNumberSubstitution: proc "system" (this: ^IFactory,
 											 NUMBER_SUBSTITUTION_METHOD substitutionMethod,
 											 u16* localeName,
 											 b32 ignoreUserOverride,
 											 INumberSubstitution** numberSubstitution
 											 ) -> HRESULT,
 	
-    CreateGlyphRunAnalysis: proc "system" (
+    CreateGlyphRunAnalysis: proc "system" (this: ^IFactory,
 										   GLYPH_RUN* glyphRun,
 										   f32 pixelsPerDip,
 										   MATRIX* transform,
