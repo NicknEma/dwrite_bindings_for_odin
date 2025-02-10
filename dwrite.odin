@@ -6,6 +6,7 @@ _ :: dwrite
 import "core:sys/windows"
 import "vendor:directx/dxgi"
 
+HDC      :: windows.HDC
 RECT     :: windows.RECT
 HRESULT  :: windows.HRESULT
 FILETIME :: windows.FILETIME
@@ -850,417 +851,417 @@ IInlineObject :: struct #raw_union {
 }
 IInlineObject_VTable :: struct {
 	using iunknown_vtable: IUnknown_VTable,
-	STDMETHOD(Draw)(
-					_In_opt_ void* clientDrawingContext,
-					_In_ ITextRenderer* renderer,
-					FLOAT originX,
-					FLOAT originY,
-					BOOL isSideways,
-					BOOL isRightToLeft,
-					_In_opt_ IUnknown* clientDrawingEffect
-					) PURE,
+	Draw: proc "system" (
+						 void* clientDrawingContext,
+						 ITextRenderer* renderer,
+						 f32 originX,
+						 f32 originY,
+						 b32 isSideways,
+						 b32 isRightToLeft,
+						 IUnknown* clientDrawingEffect
+						 ) -> HRESULT,
 	
-    STDMETHOD(GetMetrics)(
-						  _Out_ INLINE_OBJECT_METRICS* metrics
-						  ) PURE,
+	GetMetrics: proc "system" (
+							   INLINE_OBJECT_METRICS* metrics
+							   ) -> HRESULT,
 	
-    STDMETHOD(GetOverhangMetrics)(
-								  _Out_ OVERHANG_METRICS* overhangs
-								  ) PURE,
+	GetOverhangMetrics: proc "system" (
+									   OVERHANG_METRICS* overhangs
+									   ) -> HRESULT,
 	
-    STDMETHOD(GetBreakConditions)(
-								  _Out_ BREAK_CONDITION* breakConditionBefore,
-								  _Out_ BREAK_CONDITION* breakConditionAfter
-								  ) PURE,
+	GetBreakConditions: proc "system" (
+									   BREAK_CONDITION* breakConditionBefore,
+									   BREAK_CONDITION* breakConditionAfter
+									   ) -> HRESULT,
 }
 
 IPixelSnapping_UUID_STRING :: "eaf3a2da-ecf4-4d24-b644-b34f6842024b"
 IPixelSnapping_UUID := &IID{}
 IPixelSnapping :: struct #raw_union {
-    #subtype iunknown: IUnknown,
+	#subtype iunknown: IUnknown,
 	using ipixelsnapping_vtable: ^IPixelSnapping_VTable,
 }
 IPixelSnapping_VTable :: struct {
 	using iunknown_vtable: IUnknown_VTable,
-	STDMETHOD(IsPixelSnappingDisabled)(
-									   _In_opt_ void* clientDrawingContext,
-									   _Out_ BOOL* isDisabled
-									   ) PURE,
+	IsPixelSnappingDisabled: proc "system" (
+											void* clientDrawingContext,
+											b32* isDisabled
+											) -> HRESULT,
 	
-    STDMETHOD(GetCurrentTransform)(
-								   _In_opt_ void* clientDrawingContext,
-								   _Out_ MATRIX* transform
-								   ) PURE,
+	GetCurrentTransform: proc "system" (
+										void* clientDrawingContext,
+										MATRIX* transform
+										) -> HRESULT,
 	
-    STDMETHOD(GetPixelsPerDip)(
-							   _In_opt_ void* clientDrawingContext,
-							   _Out_ FLOAT* pixelsPerDip
-							   ) PURE,
+	GetPixelsPerDip: proc "system" (
+									void* clientDrawingContext,
+									f32* pixelsPerDip
+									) -> HRESULT,
 }
 
 ITextRenderer_UUID_STRING :: "ef8a8135-5cc6-45fe-8825-c5a0724eb819"
 ITextRenderer_UUID := &IID{}
 ITextRenderer :: struct #raw_union {
-    #subtype ipixelsnapping: IPixelSnapping,
+	#subtype ipixelsnapping: IPixelSnapping,
 	using itextrenderer_vtable: ^ITextRenderer_VTable,
 }
 ITextRenderer_VTable :: struct {
 	using ipixelsnapping_vtable: IPixelSnapping_VTable,
-	STDMETHOD(DrawGlyphRun)(
-							_In_opt_ void* clientDrawingContext,
-							FLOAT baselineOriginX,
-							FLOAT baselineOriginY,
-							MEASURING_MODE measuringMode,
-							_In_ GLYPH_RUN const* glyphRun,
-							_In_ GLYPH_RUN_DESCRIPTION const* glyphRunDescription,
-							_In_opt_ IUnknown* clientDrawingEffect
-							) PURE,
+	DrawGlyphRun: proc "system" (
+								 void* clientDrawingContext,
+								 f32 baselineOriginX,
+								 f32 baselineOriginY,
+								 MEASURING_MODE measuringMode,
+								 GLYPH_RUN* glyphRun,
+								 GLYPH_RUN_DESCRIPTION* glyphRunDescription,
+								 IUnknown* clientDrawingEffect
+								 ) -> HRESULT,
 	
-    STDMETHOD(DrawUnderline)(
-							 _In_opt_ void* clientDrawingContext,
-							 FLOAT baselineOriginX,
-							 FLOAT baselineOriginY,
-							 _In_ UNDERLINE const* underline,
-							 _In_opt_ IUnknown* clientDrawingEffect
-							 ) PURE,
+	DrawUnderline: proc "system" (
+								  void* clientDrawingContext,
+								  f32 baselineOriginX,
+								  f32 baselineOriginY,
+								  UNDERLINE* underline,
+								  IUnknown* clientDrawingEffect
+								  ) -> HRESULT,
 	
-    STDMETHOD(DrawStrikethrough)(
-								 _In_opt_ void* clientDrawingContext,
-								 FLOAT baselineOriginX,
-								 FLOAT baselineOriginY,
-								 _In_ STRIKETHROUGH const* strikethrough,
-								 _In_opt_ IUnknown* clientDrawingEffect
-								 ) PURE,
+	DrawStrikethrough: proc "system" (
+									  void* clientDrawingContext,
+									  f32 baselineOriginX,
+									  f32 baselineOriginY,
+									  STRIKETHROUGH* strikethrough,
+									  IUnknown* clientDrawingEffect
+									  ) -> HRESULT,
 	
-    STDMETHOD(DrawInlineObject)(
-								_In_opt_ void* clientDrawingContext,
-								FLOAT originX,
-								FLOAT originY,
-								_In_ IInlineObject* inlineObject,
-								BOOL isSideways,
-								BOOL isRightToLeft,
-								_In_opt_ IUnknown* clientDrawingEffect
-								) PURE,
+	DrawInlineObject: proc "system" (
+									 void* clientDrawingContext,
+									 f32 originX,
+									 f32 originY,
+									 IInlineObject* inlineObject,
+									 b32 isSideways,
+									 b32 isRightToLeft,
+									 IUnknown* clientDrawingEffect
+									 ) -> HRESULT,
 }
 
 ITextLayout_UUID_STRING :: "53737037-6d14-410b-9bfe-0b182bb70961"
 ITextLayout_UUID := &IID{}
 ITextLayout :: struct #raw_union {
-    #subtype itextformat: ITextFormat,
+	#subtype itextformat: ITextFormat,
 	using itextlayout_vtable: ^ITextLayout_VTable,
 }
 ITextLayout_VTable :: struct {
 	using itextformat_vtable: ITextFormat_VTable,
-	STDMETHOD(SetMaxWidth)(
-						   FLOAT maxWidth
-						   ) PURE,
+	SetMaxWidth: proc "system" (
+								f32 maxWidth
+								) -> HRESULT,
 	
-    STDMETHOD(SetMaxHeight)(
-							FLOAT maxHeight
-							) PURE,
+	SetMaxHeight: proc "system" (
+								 f32 maxHeight
+								 ) -> HRESULT,
 	
-    STDMETHOD(SetFontCollection)(
-								 _In_ IFontCollection* fontCollection,
+	SetFontCollection: proc "system" (
+									  IFontCollection* fontCollection,
+									  TEXT_RANGE textRange
+									  ) -> HRESULT,
+	
+	SetFontFamilyName: proc "system" (
+									  u16* fontFamilyName,
+									  TEXT_RANGE textRange
+									  ) -> HRESULT,
+	
+	SetFontWeight: proc "system" (
+								  FONT_WEIGHT fontWeight,
+								  TEXT_RANGE textRange
+								  ) -> HRESULT,
+	
+	SetFontStyle: proc "system" (
+								 FONT_STYLE fontStyle,
 								 TEXT_RANGE textRange
-								 ) PURE,
+								 ) -> HRESULT,
 	
-    STDMETHOD(SetFontFamilyName)(
-								 _In_z_ WCHAR const* fontFamilyName,
+	SetFontStretch: proc "system" (
+								   FONT_STRETCH fontStretch,
+								   TEXT_RANGE textRange
+								   ) -> HRESULT,
+	
+	SetFontSize: proc "system" (
+								f32 fontSize,
+								TEXT_RANGE textRange
+								) -> HRESULT,
+	
+	SetUnderline: proc "system" (
+								 b32 hasUnderline,
 								 TEXT_RANGE textRange
-								 ) PURE,
+								 ) -> HRESULT,
 	
-    STDMETHOD(SetFontWeight)(
-							 FONT_WEIGHT fontWeight,
-							 TEXT_RANGE textRange
-							 ) PURE,
+	SetStrikethrough: proc "system" (
+									 b32 hasStrikethrough,
+									 TEXT_RANGE textRange
+									 ) -> HRESULT,
 	
-    STDMETHOD(SetFontStyle)(
-							FONT_STYLE fontStyle,
-							TEXT_RANGE textRange
-							) PURE,
+	SetDrawingEffect: proc "system" (
+									 IUnknown* drawingEffect,
+									 TEXT_RANGE textRange
+									 ) -> HRESULT,
 	
-    STDMETHOD(SetFontStretch)(
-							  FONT_STRETCH fontStretch,
-							  TEXT_RANGE textRange
-							  ) PURE,
+	SetInlineObject: proc "system" (
+									IInlineObject* inlineObject,
+									TEXT_RANGE textRange
+									) -> HRESULT,
 	
-    STDMETHOD(SetFontSize)(
-						   FLOAT fontSize,
-						   TEXT_RANGE textRange
-						   ) PURE,
+	SetTypography: proc "system" (
+								  ITypography* typography,
+								  TEXT_RANGE textRange
+								  ) -> HRESULT,
 	
-    STDMETHOD(SetUnderline)(
-							BOOL hasUnderline,
-							TEXT_RANGE textRange
-							) PURE,
+	SetLocaleName: proc "system" (
+								  u16* localeName,
+								  TEXT_RANGE textRange
+								  ) -> HRESULT,
 	
-    STDMETHOD(SetStrikethrough)(
-								BOOL hasStrikethrough,
-								TEXT_RANGE textRange
-								) PURE,
+	GetMaxWidth: proc "system" () -> f32,
 	
-    STDMETHOD(SetDrawingEffect)(
-								IUnknown* drawingEffect,
-								TEXT_RANGE textRange
-								) PURE,
+	GetMaxHeight: proc "system" () -> f32,
 	
-    STDMETHOD(SetInlineObject)(
-							   _In_ IInlineObject* inlineObject,
-							   TEXT_RANGE textRange
-							   ) PURE,
+	GetFontCollection: proc "system" (
+									  u32 currentPosition,
+									  _COM_Outptr_ IFontCollection** fontCollection,
+									  _Out_opt_ TEXT_RANGE* textRange = NULL
+									  ) -> HRESULT,
 	
-    STDMETHOD(SetTypography)(
-							 _In_ ITypography* typography,
-							 TEXT_RANGE textRange
-							 ) PURE,
+	GetFontFamilyNameLength: proc "system" (
+											u32 currentPosition,
+											u32* nameLength,
+											_Out_opt_ TEXT_RANGE* textRange = NULL
+											) -> HRESULT,
 	
-    STDMETHOD(SetLocaleName)(
-							 _In_z_ WCHAR const* localeName,
-							 TEXT_RANGE textRange
-							 ) PURE,
+	GetFontFamilyName: proc "system" (
+									  u32 currentPosition,
+									  _Out_writes_z_(nameSize) u16* fontFamilyName,
+									  u32 nameSize,
+									  _Out_opt_ TEXT_RANGE* textRange = NULL
+									  ) -> HRESULT,
 	
-    STDMETHOD_(FLOAT, GetMaxWidth)() PURE,
+	GetFontWeight: proc "system" (
+								  u32 currentPosition,
+								  FONT_WEIGHT* fontWeight,
+								  _Out_opt_ TEXT_RANGE* textRange = NULL
+								  ) -> HRESULT,
 	
-    STDMETHOD_(FLOAT, GetMaxHeight)() PURE,
-	
-    STDMETHOD(GetFontCollection)(
-								 UINT32 currentPosition,
-								 _COM_Outptr_ IFontCollection** fontCollection,
+	GetFontStyle: proc "system" (
+								 u32 currentPosition,
+								 FONT_STYLE* fontStyle,
 								 _Out_opt_ TEXT_RANGE* textRange = NULL
-								 ) PURE,
+								 ) -> HRESULT,
 	
-    STDMETHOD(GetFontFamilyNameLength)(
-									   UINT32 currentPosition,
-									   _Out_ UINT32* nameLength,
-									   _Out_opt_ TEXT_RANGE* textRange = NULL
-									   ) PURE,
-	
-    STDMETHOD(GetFontFamilyName)(
-								 UINT32 currentPosition,
-								 _Out_writes_z_(nameSize) WCHAR* fontFamilyName,
-								 UINT32 nameSize,
-								 _Out_opt_ TEXT_RANGE* textRange = NULL
-								 ) PURE,
-	
-    STDMETHOD(GetFontWeight)(
-							 UINT32 currentPosition,
-							 _Out_ FONT_WEIGHT* fontWeight,
-							 _Out_opt_ TEXT_RANGE* textRange = NULL
-							 ) PURE,
-	
-    STDMETHOD(GetFontStyle)(
-							UINT32 currentPosition,
-							_Out_ FONT_STYLE* fontStyle,
-							_Out_opt_ TEXT_RANGE* textRange = NULL
-							) PURE,
-	
-    STDMETHOD(GetFontStretch)(
-							  UINT32 currentPosition,
-							  _Out_ FONT_STRETCH* fontStretch,
-							  _Out_opt_ TEXT_RANGE* textRange = NULL
-							  ) PURE,
-	
-    STDMETHOD(GetFontSize)(
-						   UINT32 currentPosition,
-						   _Out_ FLOAT* fontSize,
-						   _Out_opt_ TEXT_RANGE* textRange = NULL
-						   ) PURE,
-	
-    STDMETHOD(GetUnderline)(
-							UINT32 currentPosition,
-							_Out_ BOOL* hasUnderline,
-							_Out_opt_ TEXT_RANGE* textRange = NULL
-							) PURE,
-	
-    STDMETHOD(GetStrikethrough)(
-								UINT32 currentPosition,
-								_Out_ BOOL* hasStrikethrough,
-								_Out_opt_ TEXT_RANGE* textRange = NULL
-								) PURE,
-	
-    STDMETHOD(GetDrawingEffect)(
-								UINT32 currentPosition,
-								_COM_Outptr_ IUnknown** drawingEffect,
-								_Out_opt_ TEXT_RANGE* textRange = NULL
-								) PURE,
-	
-    STDMETHOD(GetInlineObject)(
-							   UINT32 currentPosition,
-							   _COM_Outptr_ IInlineObject** inlineObject,
-							   _Out_opt_ TEXT_RANGE* textRange = NULL
-							   ) PURE,
-	
-    STDMETHOD(GetTypography)(
-							 UINT32 currentPosition,
-							 _COM_Outptr_ ITypography** typography,
-							 _Out_opt_ TEXT_RANGE* textRange = NULL
-							 ) PURE,
-	
-    STDMETHOD(GetLocaleNameLength)(
-								   UINT32 currentPosition,
-								   _Out_ UINT32* nameLength,
+	GetFontStretch: proc "system" (
+								   u32 currentPosition,
+								   FONT_STRETCH* fontStretch,
 								   _Out_opt_ TEXT_RANGE* textRange = NULL
-								   ) PURE,
+								   ) -> HRESULT,
 	
-    STDMETHOD(GetLocaleName)(
-							 UINT32 currentPosition,
-							 _Out_writes_z_(nameSize) WCHAR* localeName,
-							 UINT32 nameSize,
-							 _Out_opt_ TEXT_RANGE* textRange = NULL
-							 ) PURE,
+	GetFontSize: proc "system" (
+								u32 currentPosition,
+								f32* fontSize,
+								_Out_opt_ TEXT_RANGE* textRange = NULL
+								) -> HRESULT,
 	
-    STDMETHOD(Draw)(
-					_In_opt_ void* clientDrawingContext,
-					_In_ ITextRenderer* renderer,
-					FLOAT originX,
-					FLOAT originY
-					) PURE,
+	GetUnderline: proc "system" (
+								 u32 currentPosition,
+								 b32* hasUnderline,
+								 _Out_opt_ TEXT_RANGE* textRange = NULL
+								 ) -> HRESULT,
 	
-    STDMETHOD(GetLineMetrics)(
-							  _Out_writes_opt_(maxLineCount) LINE_METRICS* lineMetrics,
-							  UINT32 maxLineCount,
-							  _Out_ UINT32* actualLineCount
-							  ) PURE,
+	GetStrikethrough: proc "system" (
+									 u32 currentPosition,
+									 b32* hasStrikethrough,
+									 _Out_opt_ TEXT_RANGE* textRange = NULL
+									 ) -> HRESULT,
 	
-    STDMETHOD(GetMetrics)(
-						  _Out_ TEXT_METRICS* textMetrics
-						  ) PURE,
+	GetDrawingEffect: proc "system" (
+									 u32 currentPosition,
+									 _COM_Outptr_ IUnknown** drawingEffect,
+									 _Out_opt_ TEXT_RANGE* textRange = NULL
+									 ) -> HRESULT,
 	
-    STDMETHOD(GetOverhangMetrics)(
-								  _Out_ OVERHANG_METRICS* overhangs
-								  ) PURE,
+	GetInlineObject: proc "system" (
+									u32 currentPosition,
+									_COM_Outptr_ IInlineObject** inlineObject,
+									_Out_opt_ TEXT_RANGE* textRange = NULL
+									) -> HRESULT,
 	
-    STDMETHOD(GetClusterMetrics)(
-								 _Out_writes_opt_(maxClusterCount) CLUSTER_METRICS* clusterMetrics,
-								 UINT32 maxClusterCount,
-								 _Out_ UINT32* actualClusterCount
-								 ) PURE,
+	GetTypography: proc "system" (
+								  u32 currentPosition,
+								  _COM_Outptr_ ITypography** typography,
+								  _Out_opt_ TEXT_RANGE* textRange = NULL
+								  ) -> HRESULT,
 	
-    STDMETHOD(DetermineMinWidth)(
-								 _Out_ FLOAT* minWidth
-								 ) PURE,
+	GetLocaleNameLength: proc "system" (
+										u32 currentPosition,
+										u32* nameLength,
+										_Out_opt_ TEXT_RANGE* textRange = NULL
+										) -> HRESULT,
 	
-    STDMETHOD(HitTestPoint)(
-							FLOAT pointX,
-							FLOAT pointY,
-							_Out_ BOOL* isTrailingHit,
-							_Out_ BOOL* isInside,
-							_Out_ HIT_TEST_METRICS* hitTestMetrics
-							) PURE,
+	GetLocaleName: proc "system" (
+								  u32 currentPosition,
+								  _Out_writes_z_(nameSize) u16* localeName,
+								  u32 nameSize,
+								  _Out_opt_ TEXT_RANGE* textRange = NULL
+								  ) -> HRESULT,
 	
-    STDMETHOD(HitTestTextPosition)(
-								   UINT32 textPosition,
-								   BOOL isTrailingHit,
-								   _Out_ FLOAT* pointX,
-								   _Out_ FLOAT* pointY,
-								   _Out_ HIT_TEST_METRICS* hitTestMetrics
-								   ) PURE,
+	Draw: proc "system" (
+						 void* clientDrawingContext,
+						 ITextRenderer* renderer,
+						 f32 originX,
+						 f32 originY
+						 ) -> HRESULT,
 	
-    STDMETHOD(HitTestTextRange)(
-								UINT32 textPosition,
-								UINT32 textLength,
-								FLOAT originX,
-								FLOAT originY,
-								_Out_writes_opt_(maxHitTestMetricsCount) HIT_TEST_METRICS* hitTestMetrics,
-								UINT32 maxHitTestMetricsCount,
-								_Out_ UINT32* actualHitTestMetricsCount
-								) PURE,
+	GetLineMetrics: proc "system" (
+								   _Out_writes_opt_(maxLineCount) LINE_METRICS* lineMetrics,
+								   u32 maxLineCount,
+								   u32* actualLineCount
+								   ) -> HRESULT,
 	
-    using ITextFormat::GetFontCollection,
-    using ITextFormat::GetFontFamilyNameLength,
-    using ITextFormat::GetFontFamilyName,
-    using ITextFormat::GetFontWeight,
-    using ITextFormat::GetFontStyle,
-    using ITextFormat::GetFontStretch,
-    using ITextFormat::GetFontSize,
-    using ITextFormat::GetLocaleNameLength,
-    using ITextFormat::GetLocaleName,
+	GetMetrics: proc "system" (
+							   TEXT_METRICS* textMetrics
+							   ) -> HRESULT,
+	
+	GetOverhangMetrics: proc "system" (
+									   OVERHANG_METRICS* overhangs
+									   ) -> HRESULT,
+	
+	GetClusterMetrics: proc "system" (
+									  _Out_writes_opt_(maxClusterCount) CLUSTER_METRICS* clusterMetrics,
+									  u32 maxClusterCount,
+									  u32* actualClusterCount
+									  ) -> HRESULT,
+	
+	DetermineMinWidth: proc "system" (
+									  f32* minWidth
+									  ) -> HRESULT,
+	
+	HitTestPoint: proc "system" (
+								 f32 pointX,
+								 f32 pointY,
+								 b32* isTrailingHit,
+								 b32* isInside,
+								 HIT_TEST_METRICS* hitTestMetrics
+								 ) -> HRESULT,
+	
+	HitTestTextPosition: proc "system" (
+										u32 textPosition,
+										b32 isTrailingHit,
+										f32* pointX,
+										f32* pointY,
+										HIT_TEST_METRICS* hitTestMetrics
+										) -> HRESULT,
+	
+	HitTestTextRange: proc "system" (
+									 u32 textPosition,
+									 u32 textLength,
+									 f32 originX,
+									 f32 originY,
+									 _Out_writes_opt_(maxHitTestMetricsCount) HIT_TEST_METRICS* hitTestMetrics,
+									 u32 maxHitTestMetricsCount,
+									 u32* actualHitTestMetricsCount
+									 ) -> HRESULT,
+	
+	using ITextFormat::GetFontCollection,
+	using ITextFormat::GetFontFamilyNameLength,
+	using ITextFormat::GetFontFamilyName,
+	using ITextFormat::GetFontWeight,
+	using ITextFormat::GetFontStyle,
+	using ITextFormat::GetFontStretch,
+	using ITextFormat::GetFontSize,
+	using ITextFormat::GetLocaleNameLength,
+	using ITextFormat::GetLocaleName,
 }
 
 
 IBitmapRenderTarget_UUID_STRING :: "5e5a32a3-8dff-4773-9ff6-0696eab77267"
 IBitmapRenderTarget_UUID := &IID{}
 IBitmapRenderTarget :: struct #raw_union {
-    #subtype iunknown: IUnknown,
+	#subtype iunknown: IUnknown,
 	using ibitmaprendertarget_vtable: ^IBitmapRenderTarget_VTable,
 }
 IBitmapRenderTarget_VTable :: struct {
 	using iunknown_vtable: IUnknown_VTable,
-	STDMETHOD(DrawGlyphRun)(
-							FLOAT baselineOriginX,
-							FLOAT baselineOriginY,
-							MEASURING_MODE measuringMode,
-							_In_ GLYPH_RUN const* glyphRun,
-							_In_ IRenderingParams* renderingParams,
-							COLORREF textColor,
-							_Out_opt_ RECT* blackBoxRect = NULL
-							) PURE,
+	DrawGlyphRun: proc "system" (
+								 f32 baselineOriginX,
+								 f32 baselineOriginY,
+								 MEASURING_MODE measuringMode,
+								 GLYPH_RUN* glyphRun,
+								 IRenderingParams* renderingParams,
+								 COLORREF textColor,
+								 _Out_opt_ RECT* blackBoxRect = NULL
+								 ) -> HRESULT,
 	
-    STDMETHOD_(HDC, GetMemoryDC)() PURE,
+	GetMemoryDC: proc "system" () -> HDC,
 	
-    STDMETHOD_(FLOAT, GetPixelsPerDip)() PURE,
+	GetPixelsPerDip: proc "system" () -> f32,
 	
-    STDMETHOD(SetPixelsPerDip)(
-							   FLOAT pixelsPerDip
-							   ) PURE,
+	SetPixelsPerDip: proc "system" (
+									f32 pixelsPerDip
+									) -> HRESULT,
 	
-    STDMETHOD(GetCurrentTransform)(
-								   _Out_ MATRIX* transform
-								   ) PURE,
+	GetCurrentTransform: proc "system" (
+										MATRIX* transform
+										) -> HRESULT,
 	
-    STDMETHOD(SetCurrentTransform)(
-								   _In_opt_ MATRIX const* transform
-								   ) PURE,
+	SetCurrentTransform: proc "system" (
+										MATRIX* transform
+										) -> HRESULT,
 	
-    STDMETHOD(GetSize)(
-					   _Out_ SIZE* size
-					   ) PURE,
+	GetSize: proc "system" (
+							SIZE* size
+							) -> HRESULT,
 	
-    STDMETHOD(Resize)(
-					  UINT32 width,
-					  UINT32 height
-					  ) PURE,
+	Resize: proc "system" (
+						   u32 width,
+						   u32 height
+						   ) -> HRESULT,
 }
 
 IGdiInterop_UUID_STRING :: "1edd9491-9853-4299-898f-6432983b6f3a"
 IGdiInterop_UUID := &IID{}
 IGdiInterop :: struct #raw_union {
-    #subtype iunknown: IUnknown,
+	#subtype iunknown: IUnknown,
 	using igdiinterop_vtable: ^IGdiInterop_VTable,
 }
 IGdiInterop_VTable :: struct {
 	using iunknown_vtable: IUnknown_VTable,
-	STDMETHOD(CreateFontFromLOGFONT)(
-									 _In_ LOGFONTW const* logFont,
-									 _COM_Outptr_ IFont** font
-									 ) PURE,
+	CreateFontFromLOGFONT: proc "system" (
+										  LOGFONTW* logFont,
+										  _COM_Outptr_ IFont** font
+										  ) -> HRESULT,
 	
-    STDMETHOD(ConvertFontToLOGFONT)(
-									_In_ IFont* font,
-									_Out_ LOGFONTW* logFont,
-									_Out_ BOOL* isSystemFont
-									) PURE,
+	ConvertFontToLOGFONT: proc "system" (
+										 IFont* font,
+										 LOGFONTW* logFont,
+										 b32* isSystemFont
+										 ) -> HRESULT,
 	
-    STDMETHOD(ConvertFontFaceToLOGFONT)(
-										_In_ IFontFace* font,
-										_Out_ LOGFONTW* logFont
-										) PURE,
+	ConvertFontFaceToLOGFONT: proc "system" (
+											 IFontFace* font,
+											 LOGFONTW* logFont
+											 ) -> HRESULT,
 	
-    STDMETHOD(CreateFontFaceFromHdc)(
-									 HDC hdc,
-									 _COM_Outptr_ IFontFace** fontFace
-									 ) PURE,
+	CreateFontFaceFromHdc: proc "system" (
+										  HDC hdc,
+										  _COM_Outptr_ IFontFace** fontFace
+										  ) -> HRESULT,
 	
-    STDMETHOD(CreateBitmapRenderTarget)(
-										_In_opt_ HDC hdc,
-										UINT32 width,
-										UINT32 height,
-										_COM_Outptr_ IBitmapRenderTarget** renderTarget
-										) PURE,
+	CreateBitmapRenderTarget: proc "system" (
+											 HDC hdc,
+											 u32 width,
+											 u32 height,
+											 _COM_Outptr_ IBitmapRenderTarget** renderTarget
+											 ) -> HRESULT,
 }
 
 TEXTURE_TYPE :: enum {
-    ALIASED_1x1,
+	ALIASED_1x1,
 	CLEARTYPE_3x1
 }
 
@@ -1269,7 +1270,7 @@ ALPHA_MAX :: 255
 IGlyphRunAnalysis_UUID_STRING :: "7d97dbf7-e085-42d4-81e3-6a883bded118"
 IGlyphRunAnalysis_UUID := &IID{}
 IGlyphRunAnalysis :: struct #raw_union {
-    #subtype iunknown: IUnknown,
+	#subtype iunknown: IUnknown,
 	using iglyphrunanalysis_vtable: ^IGlyphRunAnalysis_VTable,
 }
 IGlyphRunAnalysis_VTable :: struct {
@@ -1287,140 +1288,140 @@ IFactory :: struct #raw_union {
 }
 IFactory_VTable :: struct {
 	using iunknown_vtable: IUnknown_VTable,
-	STDMETHOD(GetSystemFontCollection)(
-									   _COM_Outptr_ IFontCollection** fontCollection,
-									   BOOL checkForUpdates = FALSE
-									   ) PURE,
+	GetSystemFontCollection: proc "system" (
+											IFontCollection** fontCollection,
+											b32 checkForUpdates = FALSE
+											) -> HRESULT,
 	
-    STDMETHOD(CreateCustomFontCollection)(
-										  _In_ IFontCollectionLoader* collectionLoader,
-										  _In_reads_bytes_(collectionKeySize) void const* collectionKey,
-										  UINT32 collectionKeySize,
-										  _COM_Outptr_ IFontCollection** fontCollection
-										  ) PURE,
+    CreateCustomFontCollection: proc "system" (
+											   IFontCollectionLoader* collectionLoader,
+											   _In_reads_bytes_(collectionKeySize) void* collectionKey,
+											   u32 collectionKeySize,
+											   IFontCollection** fontCollection
+											   ) -> HRESULT,
 	
-    STDMETHOD(RegisterFontCollectionLoader)(
-											_In_ IFontCollectionLoader* fontCollectionLoader
-											) PURE,
+    RegisterFontCollectionLoader: proc "system" (
+												 IFontCollectionLoader* fontCollectionLoader
+												 ) -> HRESULT,
 	
-    STDMETHOD(UnregisterFontCollectionLoader)(
-											  _In_ IFontCollectionLoader* fontCollectionLoader
-											  ) PURE,
+    UnregisterFontCollectionLoader: proc "system" (
+												   IFontCollectionLoader* fontCollectionLoader
+												   ) -> HRESULT,
 	
-    STDMETHOD(CreateFontFileReference)(
-									   _In_z_ WCHAR const* filePath,
-									   _In_opt_ FILETIME const* lastWriteTime,
-									   _COM_Outptr_ IFontFile** fontFile
-									   ) PURE,
+    CreateFontFileReference: proc "system" (
+											u16* filePath,
+											FILETIME* lastWriteTime,
+											IFontFile** fontFile
+											) -> HRESULT,
 	
-    STDMETHOD(CreateCustomFontFileReference)(
-											 _In_reads_bytes_(fontFileReferenceKeySize) void const* fontFileReferenceKey,
-											 UINT32 fontFileReferenceKeySize,
-											 _In_ IFontFileLoader* fontFileLoader,
-											 _COM_Outptr_ IFontFile** fontFile
-											 ) PURE,
+    CreateCustomFontFileReference: proc "system" (
+												  _In_reads_bytes_(fontFileReferenceKeySize) void* fontFileReferenceKey,
+												  u32 fontFileReferenceKeySize,
+												  IFontFileLoader* fontFileLoader,
+												  IFontFile** fontFile
+												  ) -> HRESULT,
 	
-    STDMETHOD(CreateFontFace)(
-							  FONT_FACE_TYPE fontFaceType,
-							  UINT32 numberOfFiles,
-							  _In_reads_(numberOfFiles) IFontFile* const* fontFiles,
-							  UINT32 faceIndex,
-							  FONT_SIMULATIONS fontFaceSimulationFlags,
-							  _COM_Outptr_ IFontFace** fontFace
-							  ) PURE,
+    CreateFontFace: proc "system" (
+								   FONT_FACE_TYPE fontFaceType,
+								   u32 numberOfFiles,
+								   _In_reads_(numberOfFiles) IFontFile** fontFiles,
+								   u32 faceIndex,
+								   FONT_SIMULATIONS fontFaceSimulationFlags,
+								   IFontFace** fontFace
+								   ) -> HRESULT,
 	
-    STDMETHOD(CreateRenderingParams)(
-									 _COM_Outptr_ IRenderingParams** renderingParams
-									 ) PURE,
+    CreateRenderingParams: proc "system" (
+										  IRenderingParams** renderingParams
+										  ) -> HRESULT,
 	
-    STDMETHOD(CreateMonitorRenderingParams)(
-											HMONITOR monitor,
-											_COM_Outptr_ IRenderingParams** renderingParams
-											) PURE,
+    CreateMonitorRenderingParams: proc "system" (
+												 HMONITOR monitor,
+												 IRenderingParams** renderingParams
+												 ) -> HRESULT,
 	
-    STDMETHOD(CreateCustomRenderingParams)(
-										   FLOAT gamma,
-										   FLOAT enhancedContrast,
-										   FLOAT clearTypeLevel,
-										   PIXEL_GEOMETRY pixelGeometry,
+    CreateCustomRenderingParams: proc "system" (
+												f32 gamma,
+												f32 enhancedContrast,
+												f32 clearTypeLevel,
+												PIXEL_GEOMETRY pixelGeometry,
+												RENDERING_MODE renderingMode,
+												IRenderingParams** renderingParams
+												) -> HRESULT,
+	
+    RegisterFontFileLoader: proc "system" (
+										   IFontFileLoader* fontFileLoader
+										   ) -> HRESULT,
+	
+    UnregisterFontFileLoader: proc "system" (
+											 IFontFileLoader* fontFileLoader
+											 ) -> HRESULT,
+	
+    CreateTextFormat: proc "system" (
+									 u16* fontFamilyName,
+									 IFontCollection* fontCollection,
+									 FONT_WEIGHT fontWeight,
+									 FONT_STYLE fontStyle,
+									 FONT_STRETCH fontStretch,
+									 f32 fontSize,
+									 u16* localeName,
+									 ITextFormat** textFormat
+									 ) -> HRESULT,
+	
+    CreateTypography: proc "system" (
+									 ITypography** typography
+									 ) -> HRESULT,
+	
+    GetGdiInterop: proc "system" (
+								  IGdiInterop** gdiInterop
+								  ) -> HRESULT,
+	
+    CreateTextLayout: proc "system" (
+									 _In_reads_(stringLength) u16* string,
+									 u32 stringLength,
+									 ITextFormat* textFormat,
+									 f32 maxWidth,
+									 f32 maxHeight,
+									 ITextLayout** textLayout
+									 ) -> HRESULT,
+	
+    CreateGdiCompatibleTextLayout: proc "system" (
+												  _In_reads_(stringLength) u16* string,
+												  u32 stringLength,
+												  ITextFormat* textFormat,
+												  f32 layoutWidth,
+												  f32 layoutHeight,
+												  f32 pixelsPerDip,
+												  MATRIX* transform,
+												  b32 useGdiNatural,
+												  ITextLayout** textLayout
+												  ) -> HRESULT,
+	
+    CreateEllipsisTrimmingSign: proc "system" (
+											   ITextFormat* textFormat,
+											   IInlineObject** trimmingSign
+											   ) -> HRESULT,
+	
+    CreateTextAnalyzer: proc "system" (
+									   ITextAnalyzer** textAnalyzer
+									   ) -> HRESULT,
+	
+    CreateNumberSubstitution: proc "system" (
+											 NUMBER_SUBSTITUTION_METHOD substitutionMethod,
+											 u16* localeName,
+											 b32 ignoreUserOverride,
+											 INumberSubstitution** numberSubstitution
+											 ) -> HRESULT,
+	
+    CreateGlyphRunAnalysis: proc "system" (
+										   GLYPH_RUN* glyphRun,
+										   f32 pixelsPerDip,
+										   MATRIX* transform,
 										   RENDERING_MODE renderingMode,
-										   _COM_Outptr_ IRenderingParams** renderingParams
-										   ) PURE,
-	
-    STDMETHOD(RegisterFontFileLoader)(
-									  _In_ IFontFileLoader* fontFileLoader
-									  ) PURE,
-	
-    STDMETHOD(UnregisterFontFileLoader)(
-										_In_ IFontFileLoader* fontFileLoader
-										) PURE,
-	
-    STDMETHOD(CreateTextFormat)(
-								_In_z_ WCHAR const* fontFamilyName,
-								_In_opt_ IFontCollection* fontCollection,
-								FONT_WEIGHT fontWeight,
-								FONT_STYLE fontStyle,
-								FONT_STRETCH fontStretch,
-								FLOAT fontSize,
-								_In_z_ WCHAR const* localeName,
-								_COM_Outptr_ ITextFormat** textFormat
-								) PURE,
-	
-    STDMETHOD(CreateTypography)(
-								_COM_Outptr_ ITypography** typography
-								) PURE,
-	
-    STDMETHOD(GetGdiInterop)(
-							 _COM_Outptr_ IGdiInterop** gdiInterop
-							 ) PURE,
-	
-    STDMETHOD(CreateTextLayout)(
-								_In_reads_(stringLength) WCHAR const* string,
-								UINT32 stringLength,
-								_In_ ITextFormat* textFormat,
-								FLOAT maxWidth,
-								FLOAT maxHeight,
-								_COM_Outptr_ ITextLayout** textLayout
-								) PURE,
-	
-    STDMETHOD(CreateGdiCompatibleTextLayout)(
-											 _In_reads_(stringLength) WCHAR const* string,
-											 UINT32 stringLength,
-											 _In_ ITextFormat* textFormat,
-											 FLOAT layoutWidth,
-											 FLOAT layoutHeight,
-											 FLOAT pixelsPerDip,
-											 _In_opt_ MATRIX const* transform,
-											 BOOL useGdiNatural,
-											 _COM_Outptr_ ITextLayout** textLayout
-											 ) PURE,
-	
-    STDMETHOD(CreateEllipsisTrimmingSign)(
-										  _In_ ITextFormat* textFormat,
-										  _COM_Outptr_ IInlineObject** trimmingSign
-										  ) PURE,
-	
-    STDMETHOD(CreateTextAnalyzer)(
-								  _COM_Outptr_ ITextAnalyzer** textAnalyzer
-								  ) PURE,
-	
-    STDMETHOD(CreateNumberSubstitution)(
-										_In_ NUMBER_SUBSTITUTION_METHOD substitutionMethod,
-										_In_z_ WCHAR const* localeName,
-										_In_ BOOL ignoreUserOverride,
-										_COM_Outptr_ INumberSubstitution** numberSubstitution
-										) PURE,
-	
-    STDMETHOD(CreateGlyphRunAnalysis)(
-									  _In_ GLYPH_RUN const* glyphRun,
-									  FLOAT pixelsPerDip,
-									  _In_opt_ MATRIX const* transform,
-									  RENDERING_MODE renderingMode,
-									  MEASURING_MODE measuringMode,
-									  FLOAT baselineOriginX,
-									  FLOAT baselineOriginY,
-									  _COM_Outptr_ IGlyphRunAnalysis** glyphRunAnalysis
-									  ) PURE,
+										   MEASURING_MODE measuringMode,
+										   f32 baselineOriginX,
+										   f32 baselineOriginY,
+										   IGlyphRunAnalysis** glyphRunAnalysis
+										   ) -> HRESULT,
 	
 }
 
